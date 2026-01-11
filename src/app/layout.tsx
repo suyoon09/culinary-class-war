@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,10 +8,17 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-cormorant",
+});
+
 export const metadata: Metadata = {
-  title: "Culinary Class War Restaurants | 흑백요리사 식당 가이드",
-  description: "Discover and book restaurants from Netflix's Culinary Class War (흑백요리사). Find restaurants by celebrity chefs from Season 1 & 2 in Seoul, Korea.",
-  keywords: ["Culinary Class War", "흑백요리사", "Korean restaurants", "Seoul dining", "Netflix", "chef restaurants", "Korea travel"],
+  title: "Culinary Class War | The Ultimate Guide",
+  description: "Discover and book Michelin-star restaurants from Netflix's hit show Culinary Class War (흑백요리사).",
+  keywords: ["Culinary Class War", "흑백요리사", "Korean restaurants", "Seoul dining", "Netflix", "Michelin star", "Chef restaurants"],
   authors: [{ name: "Culinary Class War Guide" }],
   openGraph: {
     title: "Culinary Class War Restaurants",
@@ -27,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body>{children}</body>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

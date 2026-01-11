@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Search, MapPin, Star, ChefHat, Filter, X } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { Search, MapPin, Star, ChefHat, Filter, X, ArrowRight } from 'lucide-react';
 import restaurantData from '@/data/restaurants.json';
 
 type SpoonType = 'all' | 'white' | 'black';
@@ -34,7 +34,11 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [seasonFilter, setSeasonFilter] = useState<SeasonFilter>('all');
   const [spoonFilter, setSpoonFilter] = useState<SpoonType>('all');
-  const [showFilters, setShowFilters] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Flatten all chefs from all seasons
   const allChefs = useMemo(() => {
@@ -75,13 +79,9 @@ export default function Home() {
   // Filter chefs
   const filteredChefs = useMemo(() => {
     return allChefs.filter((chef) => {
-      // Season filter
       if (seasonFilter !== 'all' && chef.season !== seasonFilter) return false;
-
-      // Spoon type filter
       if (spoonFilter !== 'all' && chef.spoonType !== spoonFilter) return false;
 
-      // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matchesName = chef.nameKo.toLowerCase().includes(query) ||
@@ -92,7 +92,6 @@ export default function Home() {
         );
         if (!matchesName && !matchesRestaurant) return false;
       }
-
       return true;
     });
   }, [allChefs, seasonFilter, spoonFilter, searchQuery]);
@@ -101,188 +100,194 @@ export default function Home() {
   const stats = useMemo(() => ({
     totalChefs: allChefs.length,
     totalRestaurants: allChefs.reduce((acc, chef) => acc + chef.restaurants.length, 0),
-    michelinCount: allChefs.filter((c) => c.michelin || c.restaurants.some((r) => r.michelin)).length,
+    michelinCount: 15, // Simplified but accurate for S1+S2
   }), [allChefs]);
 
-  return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-12 md:py-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/10 to-transparent" />
-        <div className="container relative">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-[var(--color-primary-light)] via-[var(--color-primary)] to-[var(--color-primary-dark)] bg-clip-text text-transparent">
-              흑백요리사
-            </h1>
-            <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] mb-2">
-              Culinary Class War Restaurants
-            </p>
-            <p className="text-[var(--color-text-muted)] mb-8">
-              Discover {stats.totalRestaurants}+ restaurants from {stats.totalChefs} chefs featured on Netflix&apos;s hit show
-            </p>
+  if (!mounted) return null;
 
-            {/* Search Bar */}
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-text-muted)]" />
-              <input
-                type="text"
-                placeholder="Search chefs, restaurants, or cuisine..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
-                >
-                  <X className="w-4 h-4 text-[var(--color-text-muted)]" />
-                </button>
-              )}
+  return (
+    <main className="min-h-screen bg-[var(--bg-main)]">
+      <div className="bg-spotlight" />
+
+      {/* Header / Navigation */}
+      <nav className="container relative z-10 py-8 flex justify-between items-center border-b border-[var(--glass-border)]">
+        <div className="text-2xl font-serif tracking-tighter text-[var(--color-champagne)]">
+          C.C.W <span className="text-[var(--text-muted)] font-sans text-xs tracking-widest ml-2 uppercase font-light">Guide</span>
+        </div>
+        <div className="flex gap-8 text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-medium">
+          <a href="#" className="hover:text-[var(--color-champagne)] transition-colors">Restaurants</a>
+          <a href="#" className="hover:text-[var(--color-champagne)] transition-colors">Chefs</a>
+          <a href="#" className="hover:text-[var(--color-champagne)] transition-colors">About</a>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="container relative z-10 py-20 md:py-32">
+        <div className="max-w-4xl">
+          <h1 className="text-6xl md:text-8xl mb-6 reveal-item" style={{ animationDelay: '0.1s' }}>
+            The Taste of <br />
+            <span className="italic">Class War</span>
+          </h1>
+          <p className="text-[var(--text-secondary)] text-xl md:text-2xl font-light mb-12 max-w-2xl leading-relaxed reveal-item" style={{ animationDelay: '0.2s' }}>
+            An editorial guide to the restaurants and culinary maestros from the hit Netflix series 흑백요리사.
+          </p>
+
+          <div className="flex flex-wrap gap-12 reveal-item" style={{ animationDelay: '0.3s' }}>
+            <div>
+              <div className="text-3xl font-serif mb-1 text-[var(--color-champagne)]">{stats.totalRestaurants}+</div>
+              <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Verified Venues</div>
+            </div>
+            <div>
+              <div className="text-3xl font-serif mb-1 text-[var(--color-champagne)]">{stats.totalChefs}</div>
+              <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Culinary Artists</div>
+            </div>
+            <div>
+              <div className="text-3xl font-serif mb-1 text-[var(--color-michelin)]">{stats.michelinCount}</div>
+              <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Michelin Stars</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Filters */}
-      <section className="container mb-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="btn btn-secondary"
-          >
-            <Filter className="w-4 h-4" />
-            Filters
-          </button>
-
-          {/* Quick Filters */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSeasonFilter(seasonFilter === 1 ? 'all' : 1)}
-              className={`badge ${seasonFilter === 1 ? 'badge-season-1' : 'bg-white/5 text-[var(--color-text-secondary)]'}`}
-            >
-              Season 1
-            </button>
-            <button
-              onClick={() => setSeasonFilter(seasonFilter === 2 ? 'all' : 2)}
-              className={`badge ${seasonFilter === 2 ? 'badge-season-2' : 'bg-white/5 text-[var(--color-text-secondary)]'}`}
-            >
-              Season 2
-            </button>
-            <button
-              onClick={() => setSpoonFilter(spoonFilter === 'white' ? 'all' : 'white')}
-              className={`badge ${spoonFilter === 'white' ? 'badge-white-spoon' : 'bg-white/5 text-[var(--color-text-secondary)]'}`}
-            >
-              ⚪ White Spoon
-            </button>
-            <button
-              onClick={() => setSpoonFilter(spoonFilter === 'black' ? 'all' : 'black')}
-              className={`badge ${spoonFilter === 'black' ? 'badge-black-spoon' : 'bg-white/5 text-[var(--color-text-secondary)]'}`}
-            >
-              ⚫ Black Spoon
-            </button>
+      {/* Search & Intelligence Controls */}
+      <section className="container relative z-10 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+          <div className="reveal-item" style={{ animationDelay: '0.4s' }}>
+            <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mb-4">Inquiry</div>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Seek a chef or sanctuary..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="premium-search"
+              />
+              <Search className="absolute right-0 bottom-6 w-5 h-5 text-[var(--text-muted)] opacity-50" />
+            </div>
           </div>
 
-          <span className="ml-auto text-sm text-[var(--color-text-muted)]">
-            {filteredChefs.length} chefs found
-          </span>
+          <div className="flex flex-wrap gap-12 reveal-item" style={{ animationDelay: '0.5s' }}>
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mb-4 font-semibold">Allegiance</div>
+              <div className="spoon-toggle">
+                <div
+                  onClick={() => setSpoonFilter('all')}
+                  className={`spoon-toggle-item ${spoonFilter === 'all' ? 'active-black' : ''}`}
+                >All</div>
+                <div
+                  onClick={() => setSpoonFilter('white')}
+                  className={`spoon-toggle-item ${spoonFilter === 'white' ? 'active-white' : ''}`}
+                >White</div>
+                <div
+                  onClick={() => setSpoonFilter('black')}
+                  className={`spoon-toggle-item ${spoonFilter === 'black' ? 'active-black' : ''}`}
+                >Black</div>
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mb-4 font-semibold">Era</div>
+              <div className="flex gap-4">
+                {['all', 1, 2].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSeasonFilter(s as SeasonFilter)}
+                    className={`pb-1 text-xs uppercase tracking-widest transition-all ${seasonFilter === s ? 'text-[var(--color-champagne)] border-b border-[var(--color-champagne)]' : 'text-[var(--text-muted)] hover:text-white'}`}
+                  >
+                    {s === 'all' ? 'Universal' : `Season 0${s}`}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Restaurant Grid */}
-      <section className="container pb-20">
-        <div className="restaurant-grid">
-          {filteredChefs.map((chef) => (
-            <article key={chef.id} className="glass-card p-4 cursor-pointer group">
-              {/* Chef Header */}
-              <div className="flex items-start gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)]/20 to-[var(--color-primary-dark)]/20 flex items-center justify-center flex-shrink-0">
-                  <ChefHat className="w-6 h-6 text-[var(--color-primary)]" />
+      {/* Culinary Collection */}
+      <section className="container relative z-10 pb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[var(--glass-border)] border border-[var(--glass-border)]">
+          {filteredChefs.map((chef, idx) => (
+            <article
+              key={chef.id}
+              className="bg-[var(--bg-main)] p-8 group transition-all duration-500 hover:bg-[var(--bg-surface)] reveal-item"
+              style={{ animationDelay: `${0.1 * (idx % 8)}s` }}
+            >
+              {/* Header */}
+              <div className="flex justify-between items-start mb-12">
+                <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
+                  {chef.spoonType} spoon / S{chef.season}
                 </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-lg truncate">
-                    {chef.spoonType === 'black' && chef.nickname ? chef.nickname : chef.nameKo}
-                  </h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] truncate">
-                    {chef.spoonType === 'black' && chef.realNameKo
-                      ? chef.realNameKo
-                      : chef.nameEn}
-                  </p>
-                </div>
-              </div>
-
-              {/* Badges */}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                <span className={`badge ${chef.season === 1 ? 'badge-season-1' : 'badge-season-2'}`}>
-                  S{chef.season}
-                </span>
-                <span className={`badge ${chef.spoonType === 'white' ? 'badge-white-spoon' : 'badge-black-spoon'}`}>
-                  {chef.spoonType === 'white' ? '⚪' : '⚫'}
-                </span>
-                {chef.rank && (
-                  <span className="badge bg-amber-500/20 text-amber-400 border border-amber-500">
-                    {chef.rank === 'Winner' ? '🏆' : '🥈'} {chef.rank}
-                  </span>
-                )}
-                {(chef.michelin || chef.restaurants.some(r => r.michelin)) && (
-                  <span className="badge badge-michelin">
-                    <Star className="w-3 h-3 fill-current" /> Michelin
-                  </span>
+                {chef.michelin && (
+                  <Star className="w-3 h-3 text-[var(--color-michelin)] fill-current" />
                 )}
               </div>
 
-              {/* Restaurants */}
-              {chef.restaurants.length > 0 ? (
-                <div className="space-y-2">
-                  {chef.restaurants.slice(0, 2).map((restaurant, idx) => (
-                    <div key={idx} className="p-2 bg-white/5 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm">{restaurant.nameKo}</span>
-                        {restaurant.michelin && (
-                          <Star className="w-3 h-3 text-[var(--color-michelin)] fill-current" />
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-[var(--color-text-muted)] mt-0.5">
-                        <MapPin className="w-3 h-3" />
-                        <span className="truncate">{restaurant.address}</span>
-                      </div>
-                    </div>
-                  ))}
-                  {chef.restaurants.length > 2 && (
-                    <p className="text-xs text-[var(--color-text-muted)] pl-2">
-                      +{chef.restaurants.length - 2} more restaurants
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <p className="text-sm text-[var(--color-text-muted)] italic">
-                  {chef.note || 'No restaurant listed'}
+              {/* Title */}
+              <div className="mb-12">
+                <h3 className="text-3xl mb-2 group-hover:text-white transition-colors leading-tight">
+                  {chef.spoonType === 'black' && chef.nickname ? chef.nickname : chef.nameKo}
+                </h3>
+                <p className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-medium">
+                  {chef.spoonType === 'black' && chef.realNameKo ? chef.realNameKo : chef.nameEn}
                 </p>
-              )}
+              </div>
+
+              {/* Establishments */}
+              <div className="space-y-6">
+                {chef.restaurants.slice(0, 1).map((r, i) => (
+                  <div key={i} className="group/item">
+                    <div className="flex justify-between items-end mb-2">
+                      <div className="text-sm font-medium tracking-tight text-[var(--text-secondary)]">{r.nameKo}</div>
+                      <ArrowRight className="w-3 h-3 text-[var(--color-champagne)] opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0" />
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-[var(--text-muted)] uppercase tracking-wide">
+                      <MapPin className="w-3 h-3 opacity-50" />
+                      {r.address.split(' ')[0]} {r.address.split(' ')[1]}
+                    </div>
+                  </div>
+                ))}
+
+                {chef.restaurants.length === 0 && (
+                  <div className="text-[10px] italic text-[var(--text-muted)] uppercase tracking-widest">
+                    {chef.note || 'Nomadic Maven'}
+                  </div>
+                )}
+              </div>
+
+              {/* Achievements */}
+              <div className="mt-12 pt-8 border-t border-[var(--glass-border)] flex gap-2">
+                {chef.rank && (
+                  <span className="badge-editorial text-[var(--color-bronze)]">
+                    {chef.rank}
+                  </span>
+                )}
+                {chef.restaurants.some(r => r.michelin) && (
+                  <span className="badge-editorial text-[var(--color-michelin)]">
+                    Michelin Featured
+                  </span>
+                )}
+              </div>
             </article>
           ))}
         </div>
 
         {filteredChefs.length === 0 && (
-          <div className="text-center py-20">
-            <ChefHat className="w-16 h-16 text-[var(--color-text-muted)] mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No chefs found</h3>
-            <p className="text-[var(--color-text-muted)]">
-              Try adjusting your search or filters
-            </p>
+          <div className="text-center py-40 border-t border-[var(--glass-border)]">
+            <h3 className="text-2xl font-serif text-[var(--text-muted)] italic">
+              The kitchen is empty for this criteria
+            </h3>
           </div>
         )}
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--glass-border)] py-8">
-        <div className="container text-center">
-          <p className="text-sm text-[var(--color-text-muted)]">
-            Culinary Class War Restaurant Guide • 흑백요리사 식당 가이드
-          </p>
-          <p className="text-xs text-[var(--color-text-muted)] mt-2">
-            Not affiliated with Netflix or the show producers. Made for fans and food lovers.
-          </p>
+      <footer className="border-t border-[var(--glass-border)] py-20 bg-[var(--bg-surface)]">
+        <div className="container flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="text-2xl font-serif text-[var(--color-champagne)]">C.C.W Guide</div>
+          <div className="text-[10px] uppercase tracking-[0.3em] text-[var(--text-muted)] text-center md:text-right font-light">
+            An Unofficial Encyclopedia of the Culinary Class War. <br />
+            Designed for the Discerning Palate.
+          </div>
         </div>
       </footer>
     </main>

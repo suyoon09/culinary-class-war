@@ -1,59 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  /* Primary Colors - Warm Gold (appetite-inducing) */
-  --color-primary: #D4A574;
-  --color-primary-light: #E8C9A8;
-  --color-primary-dark: #B8956A;
+  /* Obsidian Gastronomy Palette */
+  --color-obsidian: #050505;
+  --color-ink: #121212;
+  --color-champagne: #F3E5AB;
+  --color-champagne-muted: rgba(243, 229, 171, 0.7);
+  --color-bronze: #CD7F32;
+  --color-bronze-light: #E0A96D;
 
-  /* Background - Deep Charcoal */
-  --color-bg: #0A0A0A;
-  --color-bg-secondary: #141414;
-  --color-bg-card: rgba(255, 255, 255, 0.03);
-  --color-bg-card-hover: rgba(255, 255, 255, 0.06);
+  /* Backgrounds */
+  --bg-main: var(--color-obsidian);
+  --bg-surface: #0A0A0A;
+  --bg-card: rgba(18, 18, 18, 0.8);
 
-  /* Text Colors */
-  --color-text-primary: #F5F5F5;
-  --color-text-secondary: #A3A3A3;
-  --color-text-muted: #737373;
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: #D4D4D4;
+  --text-muted: #888888;
+  --text-accent: var(--color-champagne);
 
-  /* Accent Colors - Show Branding */
-  --color-white-spoon: #F5F5F5;
-  --color-black-spoon: #2D2D2D;
-  
-  /* Michelin Star */
+  /* Materials */
+  --glass-bg: rgba(20, 20, 20, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-blur: 24px;
+
+  /* Fonts */
+  --font-serif: var(--font-cormorant), serif;
+  --font-sans: var(--font-inter), sans-serif;
+
+  /* Accents */
+  --color-white-spoon: #FFFFFF;
+  --color-black-spoon: #000000;
   --color-michelin: #C41E3A;
-
-  /* Season Colors */
-  --color-season-1: #FF6B6B;
-  --color-season-2: #4ECDC4;
-
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: 12px;
-
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
-
-  /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 400ms ease;
 }
 
+/* Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -62,231 +44,197 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg-main);
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+/* Typography Overhaul */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-accent);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
-
-/* Korean Typography */
-.font-korean {
-  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+.font-serif {
+  font-family: var(--font-serif);
 }
 
-/* Glass Card */
-.glass-card {
-  background: var(--glass-bg);
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Cinematic Background */
+.bg-spotlight {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 0%,
+      rgba(243, 229, 171, 0.08) 0%,
+      rgba(205, 127, 50, 0.03) 30%,
+      transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Obsidian Card */
+.obsidian-card {
+  background: var(--bg-card);
   backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
-  transition: all var(--transition-base);
+  border-radius: 2px;
+  /* Sharper, more architectural corners */
+  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.glass-card:hover {
-  background: var(--color-bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+.obsidian-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg,
+      transparent 0%,
+      rgba(243, 229, 171, 0.03) 50%,
+      transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
-/* Badge Styles */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border-radius: 9999px;
+.obsidian-card:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(243, 229, 171, 0.15);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.obsidian-card:hover::before {
+  transform: translateX(100%);
+}
+
+/* Editorial Badge */
+.badge-editorial {
+  padding: 4px 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.badge-white-spoon {
-  background: var(--color-white-spoon);
-  color: #1a1a1a;
-}
-
-.badge-black-spoon {
-  background: var(--color-black-spoon);
-  color: var(--color-white-spoon);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.badge-season-1 {
-  background: rgba(255, 107, 107, 0.2);
-  color: var(--color-season-1);
-  border: 1px solid var(--color-season-1);
-}
-
-.badge-season-2 {
-  background: rgba(78, 205, 196, 0.2);
-  color: var(--color-season-2);
-  border: 1px solid var(--color-season-2);
-}
-
-.badge-michelin {
-  background: rgba(196, 30, 58, 0.2);
-  color: var(--color-michelin);
-  border: 1px solid var(--color-michelin);
-}
-
-/* Button Styles */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
+  letter-spacing: 0.1em;
   font-weight: 500;
-  border-radius: var(--radius-lg);
-  border: none;
+  border-radius: 0;
+  border-left: 2px solid currentColor;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Premium Button */
+.btn-premium {
+  padding: 12px 32px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  background: transparent;
+  color: var(--color-champacy);
+  border: 1px solid var(--color-champagne-muted);
+  transition: all 0.3s ease;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  text-decoration: none;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: #1a1a1a;
+.btn-premium:hover {
+  color: var(--color-obsidian);
+  background: var(--color-champagne);
+  border-color: var(--color-champagne);
 }
 
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(212, 165, 116, 0.3);
-}
-
-.btn-secondary {
-  background: var(--glass-bg);
-  color: var(--color-text-primary);
+/* Spoon Toggle */
+.spoon-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 0;
   border: 1px solid var(--glass-border);
 }
 
-.btn-secondary:hover {
-  background: var(--color-bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+.spoon-toggle-item {
+  padding: 8px 24px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Container */
-.container {
+.spoon-toggle-item.active-white {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.spoon-toggle-item.active-black {
+  background: #333333;
+  color: #FFFFFF;
+}
+
+/* Inputs */
+.premium-search {
+  background: transparent;
+  border-bottom: 2px solid var(--glass-border);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--text-primary);
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: 16px 0;
+  transition: border-color 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding: 0 var(--spacing-xl);
+.premium-search:focus {
+  outline: none;
+  border-color: var(--color-champagne);
+}
+
+/* Grid Animations */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Grid */
-.restaurant-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-lg);
-}
-
-@media (min-width: 640px) {
-  .restaurant-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .restaurant-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  .restaurant-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
-}
-
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--color-bg-secondary) 25%,
-    var(--color-bg-card-hover) 50%,
-    var(--color-bg-secondary) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+.reveal-item {
+  animation: reveal 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+  opacity: 0;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
+  background: var(--bg-main);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-text-muted);
-  border-radius: 4px;
+  background: var(--color-ink);
+  transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
-}
-
-/* Focus styles for accessibility */
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* Image styles */
-.restaurant-image {
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-secondary);
-}
-
-.chef-image {
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 50%;
-  background: var(--color-bg-secondary);
+  background: var(--color-bronze);
 }
