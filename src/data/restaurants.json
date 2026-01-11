@@ -142,6 +142,7 @@
                     "nameKo": "에드워드 리",
                     "nameEn": "Edward Lee",
                     "specialty": "Southern-Korean",
+                    "rank": "Runner-up",
                     "restaurants": [
                         {
                             "nameKo": "610 Magnolia",
@@ -394,8 +395,7 @@
                         "nameEn": "Guunmong",
                         "address": "서울 용산구 한강대로27가길 15, 2층",
                         "cuisine": "Meat"
-                    },
-                    "rank": "Runner-up"
+                    }
                 },
                 {
                     "id": "s1-bs-03",
