@@ -1,192 +1,309 @@
 @import "tailwindcss";
 
 :root {
-  /* Monochrome Duel Palette */
-  --color-white: #FFFFFF;
-  --color-black: #000000;
-  --color-gray-100: #F5F5F5;
-  --color-gray-800: #1A1A1A;
-  --color-gray-900: #0A0A0A;
+  /* Core Palette: Pure B&W with subtle grays */
+  --white: #ffffff;
+  --black: #000000;
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-400: #a1a1aa;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-900: #18181b;
+  --gray-950: #09090b;
 
-  /* Primary Theme */
-  --bg-main: var(--color-black);
-  --text-main: var(--color-white);
-  --text-dim: rgba(255, 255, 255, 0.5);
+  /* Glass: Premium frosted effect */
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
 
-  /* Glassmorphism Specs (Premium) */
-  --glass-surface: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 40px;
-
-  /* Layout */
-  --font-sans: var(--font-inter), -apple-system, system-ui, sans-serif;
-  --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Animation */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
 }
 
-* {
+/* Reset */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  background: var(--black);
+}
+
 body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  font-family: var(--font-sans);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--black);
+  color: var(--white);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glass Surface Utility */
-.glass {
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+/* ========================================
+   GLASSMORPHISM COMPONENTS
+   ======================================== */
+
+.glass-panel {
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
   border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
-.glass-white {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.glass-card {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all var(--duration-slow) var(--ease-out-expo);
 }
 
-.glass-black {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+.glass-card:hover {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
-/* Typography */
-.text-duel-bold {
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
-}
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
 
-.text-duel-sub {
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--text-dim);
-}
-
-/* Monochrome Buttons */
-.btn-duel {
-  padding: 12px 24px;
+.heading-display {
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: var(--transition-smooth);
-  cursor: pointer;
-  border: 1px solid var(--glass-border);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
-.btn-duel-white {
-  background: #FFFFFF;
-  color: #000000;
+.heading-xl {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
-.btn-duel-white:hover {
-  background: transparent;
-  color: #FFFFFF;
+.heading-lg {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-.btn-duel-black {
-  background: transparent;
-  color: #FFFFFF;
-}
-
-.btn-duel-black:hover {
-  background: #FFFFFF;
-  color: #000000;
-}
-
-/* Spoon Duel Toggle */
-.duel-toggle {
-  display: flex;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--glass-border);
-  padding: 6px;
-  gap: 4px;
-}
-
-.duel-toggle-item {
-  flex: 1;
-  padding: 10px 20px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
+.text-caption {
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: all var(--duration-fast) ease;
 }
 
-.duel-toggle-item.active-white {
-  background: #FFFFFF;
-  color: #000000;
+.btn-primary {
+  background: var(--white);
+  color: var(--black);
+  border: none;
 }
 
-.duel-toggle-item.active-black {
-  background: #333333;
-  color: #FFFFFF;
-}
-
-/* Premium Card */
-.chef-card {
-  position: relative;
-  padding: 40px;
-  transition: var(--transition-smooth);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.chef-card:hover {
-  background: rgba(255, 255, 255, 0.05);
+.btn-primary:hover {
+  opacity: 0.9;
   transform: scale(1.02);
 }
 
-.chef-card-border {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 100%;
-  background: var(--glass-border);
-}
-
-.chef-card-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--glass-border);
-}
-
-/* Search Architecture */
-.duel-search {
+.btn-ghost {
   background: transparent;
-  border: none;
-  font-size: 48px;
-  font-weight: 900;
-  color: #FFFFFF;
+  color: var(--gray-400);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-ghost:hover {
+  color: var(--white);
+  border-color: var(--glass-highlight);
+  background: var(--glass-bg);
+}
+
+/* ========================================
+   SPOON BADGES - THE DUEL
+   ======================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: 6px;
+}
+
+.badge-white {
+  background: var(--white);
+  color: var(--black);
+}
+
+.badge-black {
+  background: var(--gray-800);
+  color: var(--white);
+  border: 1px solid var(--gray-700);
+}
+
+.badge-michelin {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: var(--white);
+}
+
+.badge-winner {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: var(--black);
+}
+
+/* ========================================
+   FILTERS / TOGGLE
+   ======================================== */
+
+.filter-group {
+  display: flex;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.filter-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.filter-item:hover {
+  color: var(--gray-300);
+}
+
+.filter-item.active {
+  background: var(--white);
+  color: var(--black);
+}
+
+/* ========================================
+   SEARCH INPUT
+   ======================================== */
+
+.search-input {
   width: 100%;
+  padding: 1rem 1.25rem;
+  padding-left: 3rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--white);
   outline: none;
-  letter-spacing: -0.04em;
+  transition: all var(--duration-fast) ease;
 }
 
-.duel-search::placeholder {
-  color: rgba(255, 255, 255, 0.1);
+.search-input::placeholder {
+  color: var(--gray-600);
 }
 
-/* Animations */
+.search-input:focus {
+  border-color: var(--gray-600);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
+}
+
+/* ========================================
+   GRID & LAYOUT
+   ======================================== */
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 3rem;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
 
   to {
@@ -195,15 +312,56 @@ body {
   }
 }
 
-.reveal {
-  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-/* Scrollbar */
+.animate-in {
+  animation: fadeInUp 0.6s var(--ease-out-expo) forwards;
+  opacity: 0;
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--gray-800);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-700);
+}
+
+/* ========================================
+   NOISE OVERLAY (Premium texture)
+   ======================================== */
+
+.noise-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 9999;
 }
