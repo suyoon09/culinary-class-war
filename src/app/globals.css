@@ -1,213 +1,192 @@
 @import "tailwindcss";
 
 :root {
-  /* Obsidian Gastronomy Palette */
-  --color-obsidian: #050505;
-  --color-ink: #121212;
-  --color-champagne: #F3E5AB;
-  --color-champagne-muted: rgba(243, 229, 171, 0.7);
-  --color-bronze: #CD7F32;
-  --color-bronze-light: #E0A96D;
+  /* Monochrome Duel Palette */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-gray-100: #F5F5F5;
+  --color-gray-800: #1A1A1A;
+  --color-gray-900: #0A0A0A;
 
-  /* Backgrounds */
-  --bg-main: var(--color-obsidian);
-  --bg-surface: #0A0A0A;
-  --bg-card: rgba(18, 18, 18, 0.8);
+  /* Primary Theme */
+  --bg-main: var(--color-black);
+  --text-main: var(--color-white);
+  --text-dim: rgba(255, 255, 255, 0.5);
 
-  /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #D4D4D4;
-  --text-muted: #888888;
-  --text-accent: var(--color-champagne);
+  /* Glassmorphism Specs (Premium) */
+  --glass-surface: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 40px;
 
-  /* Materials */
-  --glass-bg: rgba(20, 20, 20, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-blur: 24px;
-
-  /* Fonts */
-  --font-serif: var(--font-cormorant), serif;
-  --font-sans: var(--font-inter), sans-serif;
-
-  /* Accents */
-  --color-white-spoon: #FFFFFF;
-  --color-black-spoon: #000000;
-  --color-michelin: #C41E3A;
+  /* Layout */
+  --font-sans: var(--font-inter), -apple-system, system-ui, sans-serif;
+  --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: var(--bg-main);
-}
-
 body {
-  font-family: var(--font-sans);
   background-color: var(--bg-main);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
+  color: var(--text-main);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Typography Overhaul */
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-accent);
-}
-
-.font-serif {
-  font-family: var(--font-serif);
-}
-
-.font-sans {
-  font-family: var(--font-sans);
-}
-
-/* Cinematic Background */
-.bg-spotlight {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150vw;
-  height: 100vh;
-  background: radial-gradient(circle at 50% 0%,
-      rgba(243, 229, 171, 0.08) 0%,
-      rgba(205, 127, 50, 0.03) 30%,
-      transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Obsidian Card */
-.obsidian-card {
-  background: var(--bg-card);
+/* Glass Surface Utility */
+.glass {
+  background: var(--glass-surface);
   backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 2px;
-  /* Sharper, more architectural corners */
-  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.obsidian-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(45deg,
-      transparent 0%,
-      rgba(243, 229, 171, 0.03) 50%,
-      transparent 100%);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.obsidian-card:hover {
-  background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(243, 229, 171, 0.15);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
-}
-
-.obsidian-card:hover::before {
-  transform: translateX(100%);
-}
-
-/* Editorial Badge */
-.badge-editorial {
-  padding: 4px 12px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 500;
-  border-radius: 0;
-  border-left: 2px solid currentColor;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* Premium Button */
-.btn-premium {
-  padding: 12px 32px;
-  font-family: var(--font-serif);
-  font-size: 18px;
-  background: transparent;
-  color: var(--color-champacy);
-  border: 1px solid var(--color-champagne-muted);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-premium:hover {
-  color: var(--color-obsidian);
-  background: var(--color-champagne);
-  border-color: var(--color-champagne);
-}
-
-/* Spoon Toggle */
-.spoon-toggle {
-  display: flex;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 4px;
-  border-radius: 0;
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
 }
 
-.spoon-toggle-item {
-  padding: 8px 24px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.glass-white {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.spoon-toggle-item.active-white {
+.glass-black {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Typography */
+.text-duel-bold {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.text-duel-sub {
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Monochrome Buttons */
+.btn-duel {
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+}
+
+.btn-duel-white {
   background: #FFFFFF;
   color: #000000;
 }
 
-.spoon-toggle-item.active-black {
+.btn-duel-white:hover {
+  background: transparent;
+  color: #FFFFFF;
+}
+
+.btn-duel-black {
+  background: transparent;
+  color: #FFFFFF;
+}
+
+.btn-duel-black:hover {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+/* Spoon Duel Toggle */
+.duel-toggle {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  padding: 6px;
+  gap: 4px;
+}
+
+.duel-toggle-item {
+  flex: 1;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.duel-toggle-item.active-white {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.duel-toggle-item.active-black {
   background: #333333;
   color: #FFFFFF;
 }
 
-/* Inputs */
-.premium-search {
-  background: transparent;
-  border-bottom: 2px solid var(--glass-border);
-  font-family: var(--font-serif);
-  font-size: 24px;
-  color: var(--text-primary);
+/* Premium Card */
+.chef-card {
+  position: relative;
+  padding: 40px;
+  transition: var(--transition-smooth);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chef-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.02);
+}
+
+.chef-card-border {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--glass-border);
+}
+
+.chef-card-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  padding: 16px 0;
-  transition: border-color 0.3s ease;
+  height: 1px;
+  background: var(--glass-border);
 }
 
-.premium-search:focus {
+/* Search Architecture */
+.duel-search {
+  background: transparent;
+  border: none;
+  font-size: 48px;
+  font-weight: 900;
+  color: #FFFFFF;
+  width: 100%;
   outline: none;
-  border-color: var(--color-champagne);
+  letter-spacing: -0.04em;
 }
 
-/* Grid Animations */
-@keyframes reveal {
+.duel-search::placeholder {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
 
   to {
@@ -216,25 +195,15 @@ h4 {
   }
 }
 
-.reveal-item {
-  animation: reveal 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
-  opacity: 0;
+.reveal {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  width: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ink);
-  transition: all 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-bronze);
+  background: #333;
 }
